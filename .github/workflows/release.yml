@@ -1,0 +1,36 @@
+name: release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore dependencies
+      run: |
+        dotnet restore src\Sigurn.Crc\Sigurn.Crc.csproj
+        dotnet restore src\Sigurn.Crc.Tests\Sigurn.Crc.Tests.csproj
+    - name: Build Release
+      run: |
+        dotnet build --no-restore -c Release src\Sigurn.Crc\Sigurn.Crc.csproj
+        dotnet build --no-restore -c Release src\Sigurn.Crc.Tests\Sigurn.Crc.Tests.csproj
+    - name: Test Release
+      run: dotnet test --no-build --verbosity normal -c Release src\Sigurn.Crc.Tests\Sigurn.Crc.Tests.csproj
+    - name: Publish artifacts
+      uses: softprops/action-gh-release@v1
+      with:
+        files: |
+          src/Sigurn.Crc/bin/Release/*.nupkg
+          src/Sigurn.Crc/bin/Release/*.snupkg
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+ 
