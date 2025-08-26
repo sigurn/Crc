@@ -1,5 +1,7 @@
 # Crc
 
+[![NuGet](https://img.shields.io/nuget/v/Sigurn.Crc)](https://www.nuget.org/packages/Sigurn.Crc)
+
 ## General information
 
 This is a CRC calculation library. It allows to calculate CRC-8, CRC-16, CRC-32 and CRC-64 with many pre-defined algorithms.
